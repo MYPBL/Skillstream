@@ -1,0 +1,13 @@
+# Python
+ps4_xenia/.venv/
+__pycache__/
+
+# Node
+node_modules/
+
+# Env
+.env
+
+# OS
+.DS_Store
+Thumbs.db
