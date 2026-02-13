@@ -1,20 +1,18 @@
 # Skillstream: Dynamic Professional Development Platform (MVP) 🚀
 
-![Skillstream Banner](docs/images/background.png)
+
 
 > **A judge-winning, adaptive employee training platform that personalizes learning paths in real-time.**
 
 ## 💡 The Problem
 Structure corporate training is broken. One-size-fits-all manuals bore advanced employees and overwhelm beginners. The solution? **A dynamic engine that adapts content difficulty and format based on real-time performance.**
 
-## 📸 Screenshots
+## 📸 Demo video link
 
-*(Screenshots will be added here. Please replace these placeholders with actual images)*
 
-> **Note:** To generate fresh screenshots, run the application locally and capture:
-> 1. The Landing Page
-> 2. The User Dashboard
-> 3. The Quiz Interface
+
+> **video:** https://drive.google.com/file/d/1fwDA5MD_CLA9g1CqpB1KBkwS1Okb0OsA/view?usp=sharing
+
 
 ---
 
