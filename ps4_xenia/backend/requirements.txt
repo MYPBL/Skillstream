@@ -1,0 +1,17 @@
+fastapi
+uvicorn[standard]
+sqlmodel
+psycopg2-binary
+pydantic
+pydantic-settings
+email-validator
+python-multipart
+python-jose[cryptography]
+passlib[bcrypt]
+alembic
+redis
+requests
+authlib
+itsdangerous
+python-dotenv
+slowapi
