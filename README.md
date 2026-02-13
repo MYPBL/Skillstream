@@ -60,4 +60,4 @@ See `ps4_xenia/deployment_instructions.md` for manual setup.
 - **Infrastructure**: Docker Compose
 
 ---
-*Built for the Hackathon 2026. Code is modular, typed, and production-ready.*
+
