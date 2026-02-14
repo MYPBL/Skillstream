@@ -4,11 +4,12 @@ Handles user registration, login, logout, and token refresh.
 """
 from datetime import datetime, timedelta
 from typing import Optional
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Request
 from fastapi.security import HTTPBearer
 from sqlmodel import Session, select
 from pydantic import BaseModel, EmailStr
-from app.core.database import get_session
+from app.core.database import get_session, commit_with_retry
+from app.core.middleware import limiter
 from app.core.security import (
     verify_password,
     get_password_hash,
@@ -59,7 +60,8 @@ class UserResponse(BaseModel):
 # --- Endpoints ---
 
 @router.post("/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
-def register_user(user_data: UserRegister, session: Session = Depends(get_session)):
+@limiter.limit("5/minute")
+def register_user(request: Request, user_data: UserRegister, session: Session = Depends(get_session)):
     """
     Register a new user account.
     
@@ -83,14 +85,14 @@ def register_user(user_data: UserRegister, session: Session = Depends(get_sessio
         email=user_data.email,
         full_name=user_data.full_name,
         hashed_password=hashed_password,
-        role=user_data.role,
+        role="Employee", # Force role to Employee for public registration
         department=user_data.department,
         is_active=True,
         is_admin=False
     )
     
     session.add(new_user)
-    session.commit()
+    commit_with_retry(session)
     session.refresh(new_user)
     
     # Generate tokens
@@ -104,7 +106,8 @@ def register_user(user_data: UserRegister, session: Session = Depends(get_sessio
 
 
 @router.post("/login", response_model=TokenResponse)
-def login(credentials: UserLogin, session: Session = Depends(get_session)):
+@limiter.limit("5/minute")
+def login(request: Request, credentials: UserLogin, session: Session = Depends(get_session)):
     """
     Authenticate user and issue session tokens.
     

@@ -4,11 +4,12 @@ import Dashboard from './components/Dashboard'
 import AssetViewer from './components/AssetViewer'
 import AnalyticsDashboard from './components/AnalyticsDashboard'
 import UserProfile from './components/UserProfile'
+import Quizzes from './components/Quizzes'
 import axios from 'axios'
 import bgImage from './assets/background.png'
 
-// Configure Axios - Backend is on port 8001
-axios.defaults.baseURL = 'http://localhost:8001/api/v1'
+// Configure Axios - Backend is on port 8000
+axios.defaults.baseURL = 'http://localhost:8000/api/v1'
 
 function App() {
     const [currentUser, setCurrentUser] = useState(null)
@@ -36,11 +37,18 @@ function App() {
                                     Adaptive<span className="font-light">Learning</span>
                                 </span>
                             </h1>
+
+                            {/* Public Nav Removed - Login Only */}
+
                             {currentUser && (
                                 <div className="flex items-center gap-6 animate-fade-in delay-100">
                                     <nav className="hidden md:flex gap-6 mr-4">
                                         <Link to="/" className="text-sm font-medium text-gray-300 hover:text-white transition-colors relative group">
                                             Dashboard
+                                            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-400 transition-all group-hover:w-full"></span>
+                                        </Link>
+                                        <Link to="/quizzes" className="text-sm font-medium text-gray-300 hover:text-white transition-colors relative group">
+                                            Quizzes
                                             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-400 transition-all group-hover:w-full"></span>
                                         </Link>
                                         <Link to="/analytics" className="text-sm font-medium text-gray-300 hover:text-white transition-colors relative group">
@@ -109,12 +117,18 @@ function App() {
 
                     <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
                         {!currentUser ? (
-                            <LoginScreen onLogin={setCurrentUser} />
+                            <Routes>
+                                <Route path="/" element={<LoginScreen onLogin={setCurrentUser} />} />
+                                <Route path="/quizzes" element={<Quizzes user={null} />} />
+                                <Route path="/learn" element={<AssetViewer user={{ id: 'guest', full_name: 'Guest' }} />} />
+                                <Route path="*" element={<Navigate to="/" />} />
+                            </Routes>
                         ) : (
                             <Routes>
                                 <Route path="/" element={<Dashboard user={currentUser} />} />
                                 <Route path="/profile" element={<UserProfile user={currentUser} />} />
                                 <Route path="/learn" element={<AssetViewer user={currentUser} />} />
+                                <Route path="/quizzes" element={<Quizzes user={currentUser} />} />
                                 <Route path="/analytics" element={<AnalyticsDashboard user={currentUser} />} />
                                 <Route path="*" element={<Navigate to="/" />} />
                             </Routes>
